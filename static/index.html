@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Online Compiler</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js'></script>
+</head>
+
+<body>
+    <h1>ONLINE COMPILER</h1>
+    <h3>Program</h3>
+    <textarea id='input-program'></textarea>
+    <button onclick="compile()">
+        RUN
+    </button>
+    <h3>Output</h3>
+    <div id='output-program' class="output">
+    </div>
+    <script>
+        async function compile() {
+            try {
+                let result = await axios.post('/compile', {
+                    program : document.getElementById('input-program').value
+                });
+                document.getElementById('output-program').innerText = result.data;
+            } catch (error) {
+                console.error(error)
+            }
+        }
+    </script>
+    <style>
+        body {
+            /* padding: 20px; */
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 25px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .output {
+            width: 100%;
+            min-height: 100px;
+            border: 1px solid gray;
+            padding: 25px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+    </style>
+</body>
+
+</html>
