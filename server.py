@@ -10,6 +10,8 @@ def root():
 
 @app.route('/compile', methods=['POST']) 
 def foo():
+
+    # CREATE 30 CHAR RANDOM AS FILENAME
     filename = ''.join(random.choice('0123456789ABCDEF') for i in range(30))
     filename_full = "program/" + filename + ".py"
     program = request.json['program']
