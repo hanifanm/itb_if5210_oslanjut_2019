@@ -4,59 +4,46 @@
 <head>
     <title>Online Compiler</title>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js'></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
     <h1>ONLINE COMPILER</h1>
-    <h3>Program</h3>
+
+
+    <!-- Input Program -->
+    <h3>> Program</h3>
     <textarea id='input-program'></textarea>
     <button onclick="compile()">
         RUN
     </button>
-    <h3>Output</h3>
+
+    <!-- Output Program -->
+    <h3 id="output-title">> Output</h3>
     <div id='output-program' class="output">
     </div>
+
+    <!-- Compile -->
     <script>
         async function compile() {
             try {
+                // Scroll to output
+                let outputTitle = document.getElementById('output-title');
+                window.scrollTo(0, outputTitle.offsetTop + 30);
+
+                // Send program to server
                 let result = await axios.post('/compile', {
-                    program : document.getElementById('input-program').value
+                    program: document.getElementById('input-program').value
                 });
+
+                // Write result to view
                 document.getElementById('output-program').innerText = result.data;
+
             } catch (error) {
                 console.error(error)
             }
         }
     </script>
-    <style>
-        body {
-            /* padding: 20px; */
-        }
-
-        textarea {
-            width: 100%;
-            height: 300px;
-            padding: 25px;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-        }
-
-        .output {
-            width: 100%;
-            min-height: 100px;
-            border: 1px solid gray;
-            padding: 25px;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-        }
-    </style>
 </body>
 
 </html>
