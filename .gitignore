@@ -1,3 +1,4 @@
-program/*.py
+program/*
+!program/*.txt
 venv
 __pycache__

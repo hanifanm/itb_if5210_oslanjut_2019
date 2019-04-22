@@ -13,6 +13,13 @@
 
     <!-- Input Program -->
     <h3>> Program</h3>
+
+    <p>
+        <label><input type="radio" name="select-lang" value="python" checked onclick="changeLang('python')"/>Python</label>
+        <label><input type="radio" name="select-lang" value="javascript" onclick="changeLang('javascript')"/>Javascript</label>
+        <label><input type="radio" name="select-lang" value="java" onclick="changeLang('java')"/>Java</label>
+    </p>
+
     <textarea id='input-program'></textarea>
     <button onclick="compile()">
         RUN
@@ -23,17 +30,33 @@
     <div id='output-program' class="output">
     </div>
 
+    <div class="footer">
+    </div>
+
     <!-- Compile -->
     <script>
         async function compile() {
             try {
+
+                // Get program code
+                let programCode = document.getElementById('input-program').value;
+                if(!programCode.trim()) {
+                    alert('Please write some code :)');
+                    return;
+                }
+
                 // Scroll to output
                 let outputTitle = document.getElementById('output-title');
                 window.scrollTo(0, outputTitle.offsetTop + 30);
 
+                // Get selected language
+                let langs = document.getElementsByName('select-lang');
+                let selectedlang = Array.from(langs).filter(lang => lang.checked)[0].value;
+
                 // Send program to server
                 let result = await axios.post('/compile', {
-                    program: document.getElementById('input-program').value
+                    program: programCode,
+                    lang: selectedlang
                 });
 
                 // Write result to view
@@ -43,6 +66,23 @@
                 console.error(error)
             }
         }
+
+        // Handle change language
+        function changeLang(lang) {
+            let programCode = document.getElementById('input-program');
+
+            switch(lang) {
+                case 'python':
+                    programCode.value = `for i in range(0,10):\n  print('Hello, World! Im Python.')`;
+                    break;
+                case 'javascript':
+                    programCode.value = `for(let i=0;i<10;i++)\n  console.log('Hello, World! Im Javascript')`;
+                    break;
+            }
+        }
+
+        changeLang('python')
+
     </script>
 </body>
 

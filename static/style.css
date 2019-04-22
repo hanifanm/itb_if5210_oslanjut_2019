@@ -24,3 +24,7 @@ button {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+.footer {
+    height: 300px;
+}
