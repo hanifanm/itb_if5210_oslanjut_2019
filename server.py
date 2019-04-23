@@ -14,6 +14,12 @@ def writeProgram(program, filename_full):
     text_file.write(program)
     text_file.close()
 
+def executeCommand(cmd):
+    p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            stdin=subprocess.PIPE)
+    return p.communicate()
+
 @app.route('/compile', methods=['POST']) 
 def foo():
 
@@ -31,6 +37,14 @@ def foo():
       filename_full = "program/" + filename + ".js"
       writeProgram(program, filename_full)
       cmd = ["node", filename_full]
+    elif(language == 'java'):
+      filename_full = "program/" + filename + ".java"
+      writeProgram(program, filename_full)
+      cmd = ["mkdir", filename]
+      executeCommand(cmd)
+      cmd = ["javac", filename_full + " -d " + filename]
+      executeCommand(cmd)
+      cmd = ["java", "MyClass"]
     else:
       cmd = ["echo", "language not supproted"]
 
@@ -42,7 +56,10 @@ def foo():
 
     
     # RETURN
-    return out
+    if (len(err)>0):
+      return err
+    else:
+      return out
 
 if __name__ == '__main__':
   app.run(debug=True)
